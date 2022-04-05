@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const tokenSecret = 'my-token-secret';
+const tokenSecret = 'temp-secret';
 
 exports.verify = (req, res, next) => {
   const token = req.headers.authorization
