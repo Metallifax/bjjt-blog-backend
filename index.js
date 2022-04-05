@@ -4,7 +4,7 @@ const authRoute = require('./routes/auth');
 
 const port = 4000
 const app = express();
-const dbUri = 'mongodb://localhost/authentication';
+const dbUri = 'mongodb://localhost/blog-backend';
 
 app.use(express.json());
 app.use('/api/auth', authRoute);
