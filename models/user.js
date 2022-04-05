@@ -1,17 +1,6 @@
 const mongoose = require('mongoose');
 const {BlogPostSchema} = require('./blogPost');
 
-// const blogPost = new mongoose.Schema({
-//   title: {
-//     type: String,
-//     required: true
-//   },
-//   content: {
-//     type: String,
-//     required: true
-//   }
-// })
-
 const user = mongoose.Schema({
   displayName: {
     type: String,
