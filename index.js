@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const authRoute = require('./routes/auth');
+const userRoute = require('./routes/user')
 
 const port = 4000
 const app = express();
@@ -8,6 +9,7 @@ const dbUri = 'mongodb://localhost/blog-backend';
 
 app.use(express.json());
 app.use('/api/auth', authRoute);
+app.use('/api/user', userRoute);
 
 mongoose.connect(dbUri, {useNewUrlParser: true, useUnifiedTopology: true}, () => {
   console.log('Ready for connections');
