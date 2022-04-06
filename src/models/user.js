@@ -20,12 +20,12 @@ const user = mongoose.Schema({
   blogPosts: {
     type: [
       {
-        title: {type: String, required: true},
-        content: {type: String, required: true},
-      }],
+        title: { type: String, required: true },
+        content: { type: String, required: true },
+      },
+    ],
     required: false,
   },
 });
 
 export default new mongoose.model('User', user);
-
