@@ -1,8 +1,8 @@
-const express = require('express');
-const User = require('../models/user');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const middleware = require('../middleware');
+import express from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
+import middleware from '../middleware.js';
 
 const rounds = 10;
 const tokenSecret = 'temp-secret';
@@ -44,8 +44,8 @@ router.post('/signup', (req, res) => {
   });
 });
 
-function generateToken(user) {
+const generateToken = (user) => {
   return jwt.sign({data: user}, tokenSecret, {expiresIn: '24h'});
 }
 
-module.exports = router;
+export default router;
