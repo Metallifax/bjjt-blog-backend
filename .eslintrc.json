@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "parser": "@babel/eslint-parser",
   "parserOptions": {
@@ -15,11 +16,14 @@
     }
   },
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style"
   ],
   "plugins": [
     "prettier",
-    "prefer-arrow-functions"
+    "prefer-arrow-functions",
+    "jest"
   ],
   "rules": {
     "padding-line-between-statements": [
