@@ -7,6 +7,7 @@
   "parser": "@babel/eslint-parser",
   "parserOptions": {
     "sourceType": "module",
+    "ecmaVersion": "latest",
     "allowImportExportEverywhere": false,
     "ecmaFeatures": {
       "globalReturn": false
@@ -43,6 +44,8 @@
     ],
     "prefer-arrow-callback": "error",
     "prettier/prettier": "warn",
-    "prefer-arrow-functions/prefer-arrow-functions": "error"
+    "prefer-arrow-functions/prefer-arrow-functions": "error",
+    "no-unused-vars": "warn",
+    "jest/expect-expect": "off"
   }
 }

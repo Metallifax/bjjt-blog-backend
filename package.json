@@ -3,30 +3,37 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon",
-    "format": "prettier -c src && prettier -c index.js",
-    "lint": "eslint --ext js src && eslint --ext js index.js",
-    "test": "jest"
+    "dev": "nodemon --trace-warnings | pino-pretty",
+    "format": "prettier -c src && prettier -c src/index.js",
+    "lint": "eslint --ext js src && eslint --ext js src/index.js",
+    "test": "jest --notify",
+    "test-open-handles": "npm run test --detectOpenHandles"
   },
   "jest": {
     "injectGlobals": true,
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "verbose": true,
+    "forceExit": true
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dayjs": "^1.11.0",
     "express": "^4.17.3",
     "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
-    "nodemon": "^2.0.15"
+    "node-notifier": "^10.0.1",
+    "nodemon": "^2.0.15",
+    "pino": "^7.9.2",
+    "pino-pretty": "^7.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
@@ -38,6 +45,7 @@
     "eslint-plugin-prefer-arrow-functions": "^3.1.4",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.5.1",
+    "mongodb-memory-server": "^8.4.2",
     "prettier": "^2.6.2",
     "supertest": "^6.2.2"
   }
