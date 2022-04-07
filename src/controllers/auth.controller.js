@@ -1,14 +1,9 @@
-import express from 'express';
+import User from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/user.js';
-import middleware from '../middleware.js';
+import config from '../config/default.js';
 
-const rounds = 10;
-const tokenSecret = 'temp-secret';
-const router = express.Router();
-
-router.get('/login', (req, res) => {
+export const loginUser = (req, res) => {
   User.findOne({ email: req.body.email }).then((user) => {
     if (!user) {
       res.status(404).json({ error: 'no user with that email found' });
@@ -24,14 +19,14 @@ router.get('/login', (req, res) => {
       });
     }
   });
-});
+};
 
-router.get('/jwt-test', middleware.verify, (req, res) => {
+export const jwtTest = (req, res) => {
   res.status(200).json(req.user);
-});
+};
 
-router.post('/signup', (req, res) => {
-  bcrypt.hash(req.body.password, rounds, (error, hash) => {
+export const signupUser = (req, res) => {
+  bcrypt.hash(req.body.password, config.saltRounds, (error, hash) => {
     if (error) res.status(500).json(error);
     else {
       const newUser = User({ email: req.body.email, password: hash });
@@ -45,9 +40,7 @@ router.post('/signup', (req, res) => {
         });
     }
   });
-});
+};
 
 const generateToken = (user) =>
-  jwt.sign({ data: user }, tokenSecret, { expiresIn: '24h' });
-
-export default router;
+  jwt.sign({ data: user }, config.tokenSecret, { expiresIn: '24h' });
