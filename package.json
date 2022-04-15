@@ -9,7 +9,7 @@
     "format": "prettier -c src && prettier -c src/index.js",
     "lint": "eslint --ext js src && eslint --ext js src/index.js",
     "test": "jest --notify",
-    "test-open-handles": "npm run test --detectOpenHandles"
+    "test-open-handles": "npm run test -- --detectOpenHandles"
   },
   "jest": {
     "injectGlobals": true,
