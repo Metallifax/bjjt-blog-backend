@@ -2,6 +2,7 @@ import User from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../config/default.js';
+import { validationResult } from 'express-validator';
 
 export const loginUser = (req, res) => {
   User.findOne({ email: req.body.email }).then((user) => {
@@ -26,6 +27,11 @@ export const jwtTest = (req, res) => {
 };
 
 export const signupUser = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   bcrypt.hash(req.body.password, config.saltRounds, (error, hash) => {
     if (error) res.status(500).json(error);
     else {
