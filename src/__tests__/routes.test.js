@@ -4,6 +4,10 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 const app = server();
+const validUser = {
+  email: 'mail@mail.com',
+  password: 'password',
+};
 
 describe('route tests', () => {
   beforeAll(async () => {
@@ -20,7 +24,7 @@ describe('route tests', () => {
     it('should throw 500 when only password given', async () => {
       await supertest(app)
         .post(`/api/auth/signup`)
-        .send({ password: 'password' })
+        .send({ password: validUser.password })
         .expect('Content-Type', /json/)
         .expect(500);
     });
@@ -28,7 +32,7 @@ describe('route tests', () => {
     it('should throw 500 when only email given', async () => {
       await supertest(app)
         .post('/api/auth/signup')
-        .send({ email: 'mail@mail.com' })
+        .send({ email: validUser.email })
         .expect('Content-Type', /json/)
         .expect(500);
     });
@@ -36,19 +40,16 @@ describe('route tests', () => {
     it('should return 200 when correctly filled out', async () => {
       await supertest(app)
         .post('/api/auth/signup')
-        .send({ email: 'mail@mail.com', password: 'password' })
+        .send(validUser)
         .expect('Content-Type', /json/)
         .expect(200);
     });
 
     // eslint-disable-next-line max-len
     it('fetching a recently added user correctly gets the user object', async () => {
-      const email = 'mail@mail.com';
-      const password = 'password';
-
       const response = await supertest(app)
         .post('/api/auth/signup')
-        .send({ email, password });
+        .send(validUser);
 
       const auth = `bearer ${response.body.token}`;
 
