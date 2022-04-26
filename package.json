@@ -6,10 +6,9 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon --trace-warnings | pino-pretty",
+    "test": "jest --notify --detectOpenHandles",
     "format": "prettier -c src && prettier -c src/index.js",
-    "lint": "eslint --ext js src && eslint --ext js src/index.js",
-    "test": "jest --notify",
-    "test-open-handles": "npm run test -- --detectOpenHandles"
+    "lint": "eslint --ext js src && eslint --ext js src/index.js"
   },
   "jest": {
     "injectGlobals": true,
