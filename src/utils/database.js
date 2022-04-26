@@ -5,7 +5,7 @@ import logger from './logger.js';
 const connect = async () => {
   try {
     await mongoose.connect(
-      config.get('dbUri'),
+      config.dbUri,
       { useNewUrlParser: true, useUnifiedTopology: true },
       () => {
         logger.info('DB ready for connections');

@@ -1,7 +1,7 @@
 import User from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import config from 'config';
+import config from '../config/default.js';
 import { validationResult } from 'express-validator';
 
 export const loginUser = (req, res) => {
@@ -32,7 +32,7 @@ export const signupUser = (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  bcrypt.hash(req.body.password, config.get('saltRounds'), (error, hash) => {
+  bcrypt.hash(req.body.password, config.saltRounds, (error, hash) => {
     if (error) res.status(500).json(error);
     else {
       const newUser = User({ email: req.body.email, password: hash });
@@ -49,4 +49,4 @@ export const signupUser = (req, res) => {
 };
 
 const generateToken = (user) =>
-  jwt.sign({ data: user }, config.get('tokenSecret'), { expiresIn: '24h' });
+  jwt.sign({ data: user }, config.tokenSecret, { expiresIn: '24h' });
