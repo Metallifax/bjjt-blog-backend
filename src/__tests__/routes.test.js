@@ -161,6 +161,7 @@ describe('route tests', () => {
       });
     });
 
+    // eslint-disable-next-line max-len
     it('should return jwt token when valid user exists and attempts to log in', async () => {
       await sendRequest(app, signupRoute, validUser, 200).then(async () => {
         await supertest(app)
@@ -197,6 +198,7 @@ describe('route tests', () => {
         });
     });
 
+    // eslint-disable-next-line max-len
     it('should return an error message when password provided but not email', async () => {
       const invalidUser = { email: '', password: validUser.password };
 
@@ -209,6 +211,7 @@ describe('route tests', () => {
         });
     });
 
+    // eslint-disable-next-line max-len
     it('should return an error message when email provided is not valid', async () => {
       const invalidUser = { email: 'mail', password: validUser.password };
 
