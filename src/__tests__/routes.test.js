@@ -155,7 +155,9 @@ describe('route tests', () => {
     // eslint-disable-next-line max-len
     it('should return 200 when valid user exists and attempts to log in', async () => {
       // sign up
-      await sendRequest(app, signupRoute, validUser, 200);
+      await sendRequest(app, signupRoute, validUser, 200).then(() => {
+        supertest(app).get(signinRoute).send(validUser).expect(200);
+      });
     });
 
     // eslint-disable-next-line max-len
