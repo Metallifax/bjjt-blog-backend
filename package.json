@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "nodemon --trace-warnings | pino-pretty",
     "test": "jest --notify --detectOpenHandles",
+    "test-all": "npm run test; npm run format; npm run lint",
     "format": "prettier -c src && prettier -c src/index.js",
     "lint": "eslint --ext js src && eslint --ext js src/index.js"
   },

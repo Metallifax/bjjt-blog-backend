@@ -31,7 +31,7 @@ describe('route tests', () => {
   });
 
   afterEach(async () => {
-    con.connection.dropDatabase();
+    await con.connection.dropDatabase();
   });
 
   afterAll(async () => {
@@ -155,13 +155,7 @@ describe('route tests', () => {
     // eslint-disable-next-line max-len
     it('should return 200 when valid user exists and attempts to log in', async () => {
       // sign up
-      await supertest(app)
-        .post(signupRoute)
-        .send(validUser)
-        .then((res) => {
-          console.log(res.body);
-          supertest(app).get(signinRoute).send(validUser).expect(200);
-        });
+      await sendRequest(app, signupRoute, validUser, 200);
     });
 
     // eslint-disable-next-line max-len
