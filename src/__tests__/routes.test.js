@@ -17,11 +17,21 @@ const sendRequest = (app, route, body, responseCode) => {
     .expect(responseCode);
 };
 
+const signupRoute = '/api/auth/signup';
+const signinRoute = '/api/auth/login';
+
 describe('route tests', () => {
+  let mongoServer = null;
+  let con = null;
+
   // setup functions
   beforeAll(async () => {
-    const mongoServer = await MongoMemoryServer.create();
-    await mongoose.connect(mongoServer.getUri());
+    mongoServer = await MongoMemoryServer.create();
+    con = await mongoose.connect(mongoServer.getUri());
+  });
+
+  afterEach(async () => {
+    con.connection.dropDatabase();
   });
 
   afterAll(async () => {
@@ -30,8 +40,6 @@ describe('route tests', () => {
   });
 
   describe('user signup route tests', () => {
-    const signupRoute = '/api/auth/signup';
-
     describe('password tests in user signup', () => {
       it('should throw 400 when only password given', async () => {
         const response = await sendRequest(
@@ -141,6 +149,25 @@ describe('route tests', () => {
             expect(res.body.email).toBe('mail@mail.com');
           });
       });
+    });
+  });
+  describe('user login route tests', () => {
+    // eslint-disable-next-line max-len
+    it('should return 200 when valid user exists and attempts to log in', async () => {
+      // sign up
+      await supertest(app)
+        .post(signupRoute)
+        .send(validUser)
+        .then((res) => {
+          console.log(res.body);
+          supertest(app).get(signinRoute).send(validUser).expect(200);
+        });
+    });
+
+    // eslint-disable-next-line max-len
+    it('should return 404 when user does not exist and attempts to log in', async () => {
+      // sign in
+      await supertest(app).get(signinRoute).send(validUser).expect(404);
     });
   });
 });
