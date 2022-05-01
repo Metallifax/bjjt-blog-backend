@@ -5,14 +5,23 @@ import {
   loginUser,
   signupUser,
 } from '../controllers/auth.controller.js';
-import { body } from 'express-validator';
+import {
+  emailValidator,
+  passwordValidatorSignin,
+  passwordValidatorSignup,
+} from '../utils/validators.js';
 
 const authRouter = express.Router();
 
 // login user and get credentials
-authRouter.get('/login', (req, res) => {
-  loginUser(req, res);
-});
+authRouter.get(
+  '/login',
+  emailValidator(),
+  passwordValidatorSignin(),
+  (req, res) => {
+    loginUser(req, res);
+  },
+);
 
 // test jwt passed as bearer to Authorization header
 authRouter.get('/jwt-test', middleware.verify, (req, res) => {
@@ -22,18 +31,8 @@ authRouter.get('/jwt-test', middleware.verify, (req, res) => {
 // sign up new user via password and email credentials
 authRouter.post(
   '/signup',
-  body('email')
-    .notEmpty()
-    .withMessage('Email must not be empty')
-    .isEmail()
-    .withMessage('Must be a valid email'),
-  body('password')
-    .notEmpty()
-    .withMessage('Password must not be empty')
-    .isStrongPassword()
-    .withMessage('Must contain a capital letter, number and special character')
-    .isLength({ min: 8 })
-    .withMessage('Must be at least 8 characters long'),
+  emailValidator(),
+  passwordValidatorSignup(),
   (req, res) => {
     signupUser(req, res);
   },

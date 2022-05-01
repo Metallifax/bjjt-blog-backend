@@ -5,9 +5,14 @@ import config from '../config/default.js';
 import { validationResult } from 'express-validator';
 
 export const loginUser = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   User.findOne({ email: req.body.email }).then((user) => {
     if (!user) {
-      res.status(404).json({ error: 'no user with that email found' });
+      res.status(404).json({ error: 'No user with that email found' });
     } else {
       bcrypt.compare(req.body.password, user.password, (error, match) => {
         if (error) {

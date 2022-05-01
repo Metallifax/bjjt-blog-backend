@@ -19,6 +19,7 @@ const sendRequest = (app, route, body, responseCode) => {
 
 const signupRoute = '/api/auth/signup';
 const signinRoute = '/api/auth/login';
+const jwtTestRoute = '/api/auth/jwt-test';
 
 describe('route tests', () => {
   let mongoServer = null;
@@ -142,7 +143,7 @@ describe('route tests', () => {
         const auth = `bearer ${response.body.token}`;
 
         await supertest(app)
-          .get(`/api/auth/jwt-test`)
+          .get(jwtTestRoute)
           .set('Authorization', auth)
           .expect(200)
           .then((res) => {
@@ -160,10 +161,64 @@ describe('route tests', () => {
       });
     });
 
+    it('should return jwt token when valid user exists and attempts to log in', async () => {
+      await sendRequest(app, signupRoute, validUser, 200).then(async () => {
+        await supertest(app)
+          .get(signinRoute)
+          .send(validUser)
+          .then((res) => {
+            expect(res.body.token).toBeDefined();
+          });
+      });
+    });
+
     // eslint-disable-next-line max-len
     it('should return 404 when user does not exist and attempts to log in', async () => {
       // sign in
-      await supertest(app).get(signinRoute).send(validUser).expect(404);
+      await supertest(app)
+        .get(signinRoute)
+        .send(validUser)
+        .expect(404)
+        .then((res) => {
+          expect(res.body.error).toBe('No user with that email found');
+        });
+    });
+
+    // eslint-disable-next-line max-len
+    it('should return an error message when email provided but not password', async () => {
+      const invalidUser = { email: validUser.email, password: '' };
+
+      await supertest(app)
+        .get(signinRoute)
+        .set('Accept', 'application/json')
+        .send(invalidUser)
+        .then((res) => {
+          expect(res.body.errors[0].msg).toBe('Password must not be empty');
+        });
+    });
+
+    it('should return an error message when password provided but not email', async () => {
+      const invalidUser = { email: '', password: validUser.password };
+
+      await supertest(app)
+        .get(signinRoute)
+        .set('Accept', 'application/json')
+        .send(invalidUser)
+        .then((res) => {
+          expect(res.body.errors[0].msg).toBe('Email must not be empty');
+        });
+    });
+
+    it('should return an error message when email provided is not valid', async () => {
+      const invalidUser = { email: 'mail', password: validUser.password };
+
+      await supertest(app)
+        .get(signinRoute)
+        .set('Accept', 'application/json')
+        .send(invalidUser)
+        .then((res) => {
+          expect(res.body.errors[0].msg).toBe('Must be a valid email');
+        });
     });
   });
 });
