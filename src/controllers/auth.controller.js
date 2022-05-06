@@ -20,7 +20,7 @@ export const loginUser = (req, res) => {
         } else if (match) {
           res.status(200).json({ token: generateToken(user) });
         } else {
-          res.status(403).json({ error: 'passwords do not match' });
+          res.status(403).json({ error: 'password is incorrect' });
         }
       });
     }
