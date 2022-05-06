@@ -165,7 +165,7 @@ describe('route tests', () => {
     it('should return jwt token when valid user exists and attempts to log in', async () => {
       await sendRequest(app, signupRoute, validUser, 200).then(async () => {
         await supertest(app)
-          .get(signinRoute)
+          .post(signinRoute)
           .send(validUser)
           .then((res) => {
             expect(res.body.token).toBeDefined();
@@ -177,7 +177,7 @@ describe('route tests', () => {
     it('should return 404 when user does not exist and attempts to log in', async () => {
       // sign in
       await supertest(app)
-        .get(signinRoute)
+        .post(signinRoute)
         .send(validUser)
         .expect(404)
         .then((res) => {
@@ -190,7 +190,7 @@ describe('route tests', () => {
       const invalidUser = { email: validUser.email, password: '' };
 
       await supertest(app)
-        .get(signinRoute)
+        .post(signinRoute)
         .set('Accept', 'application/json')
         .send(invalidUser)
         .then((res) => {
@@ -203,7 +203,7 @@ describe('route tests', () => {
       const invalidUser = { email: '', password: validUser.password };
 
       await supertest(app)
-        .get(signinRoute)
+        .post(signinRoute)
         .set('Accept', 'application/json')
         .send(invalidUser)
         .then((res) => {
@@ -216,7 +216,7 @@ describe('route tests', () => {
       const invalidUser = { email: 'mail', password: validUser.password };
 
       await supertest(app)
-        .get(signinRoute)
+        .post(signinRoute)
         .set('Accept', 'application/json')
         .send(invalidUser)
         .then((res) => {
