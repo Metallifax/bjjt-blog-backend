@@ -14,7 +14,7 @@ import {
 const authRouter = express.Router();
 
 // login user and get credentials
-authRouter.get(
+authRouter.post(
   '/login',
   emailValidator(),
   passwordValidatorSignin(),
