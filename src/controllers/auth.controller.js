@@ -7,12 +7,19 @@ import { validationResult } from 'express-validator';
 export const loginUser = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json(
+      errors.array().map((error) => ({
+        param: error.param,
+        msg: error.msg,
+      })),
+    );
   }
 
   User.findOne({ email: req.body.email }).then((user) => {
     if (!user) {
-      res.status(404).json({ error: 'No user with that email found' });
+      res
+        .status(404)
+        .json([{ param: 'email', msg: 'No user with that email found' }]);
     } else {
       bcrypt.compare(req.body.password, user.password, (error, match) => {
         if (error) {
@@ -20,7 +27,9 @@ export const loginUser = (req, res) => {
         } else if (match) {
           res.status(200).json({ token: generateToken(user) });
         } else {
-          res.status(403).json({ error: 'password is incorrect' });
+          res
+            .status(403)
+            .json([{ param: 'password', msg: 'password is incorrect' }]);
         }
       });
     }

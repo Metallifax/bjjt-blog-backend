@@ -181,7 +181,7 @@ describe('route tests', () => {
         .send(validUser)
         .expect(404)
         .then((res) => {
-          expect(res.body.error).toBe('No user with that email found');
+          expect(res.body[0].msg).toBe('No user with that email found');
         });
     });
 
@@ -194,7 +194,7 @@ describe('route tests', () => {
         .set('Accept', 'application/json')
         .send(invalidUser)
         .then((res) => {
-          expect(res.body.errors[0].msg).toBe('Password must not be empty');
+          expect(res.body[0].msg).toBe('Password must not be empty');
         });
     });
 
@@ -207,7 +207,7 @@ describe('route tests', () => {
         .set('Accept', 'application/json')
         .send(invalidUser)
         .then((res) => {
-          expect(res.body.errors[0].msg).toBe('Email must not be empty');
+          expect(res.body[0].msg).toBe('Email must not be empty');
         });
     });
 
@@ -220,7 +220,7 @@ describe('route tests', () => {
         .set('Accept', 'application/json')
         .send(invalidUser)
         .then((res) => {
-          expect(res.body.errors[0].msg).toBe('Must be a valid email');
+          expect(res.body[0].msg).toBe('Must be a valid email');
         });
     });
   });
