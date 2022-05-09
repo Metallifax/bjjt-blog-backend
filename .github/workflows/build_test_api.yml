@@ -13,7 +13,7 @@ jobs:
   build_test:
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-18.04, macos-11]
+        os: [ubuntu-20.04, ubuntu-18.04]
     runs-on: ${{ matrix.os }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
