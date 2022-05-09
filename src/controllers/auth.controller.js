@@ -43,7 +43,12 @@ export const jwtTest = (req, res) => {
 export const signupUser = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json(
+      errors.array().map((error) => ({
+        param: error.param,
+        msg: error.msg,
+      })),
+    );
   }
 
   bcrypt.hash(req.body.password, config.saltRounds, (error, hash) => {
