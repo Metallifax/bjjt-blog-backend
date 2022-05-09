@@ -50,7 +50,7 @@ describe('route tests', () => {
           400,
         );
 
-        expect(response.body.errors[0].msg).toBe('Email must not be empty');
+        expect(response.body[0].msg).toBe('Email must not be empty');
       });
 
       it('should throw 400 on password less than char limit', async () => {
@@ -59,9 +59,7 @@ describe('route tests', () => {
 
         const response = await sendRequest(app, signupRoute, invalidUser, 400);
 
-        expect(response.body.errors[1].msg).toBe(
-          'Must be at least 8 characters long',
-        );
+        expect(response.body[1].msg).toBe('Must be at least 8 characters long');
       });
 
       it('should throw 400 when password contains only letters', async () => {
@@ -70,7 +68,7 @@ describe('route tests', () => {
 
         const response = await sendRequest(app, signupRoute, invalidUser, 400);
 
-        expect(response.body.errors[0].msg).toBe(
+        expect(response.body[0].msg).toBe(
           'Must contain a capital letter, number and special character',
         );
       });
@@ -81,7 +79,7 @@ describe('route tests', () => {
 
         const response = await sendRequest(app, signupRoute, invalidUser, 400);
 
-        expect(response.body.errors[0].msg).toBe(
+        expect(response.body[0].msg).toBe(
           'Must contain a capital letter, number and special character',
         );
       });
@@ -93,7 +91,7 @@ describe('route tests', () => {
 
         const response = await sendRequest(app, signupRoute, invalidUser, 400);
 
-        expect(response.body.errors[0].msg).toBe(
+        expect(response.body[0].msg).toBe(
           'Must contain a capital letter, number and special character',
         );
       });
@@ -117,7 +115,7 @@ describe('route tests', () => {
           400,
         );
 
-        expect(response.body.errors[0].msg).toBe('Password must not be empty');
+        expect(response.body[0].msg).toBe('Password must not be empty');
       });
 
       // eslint-disable-next-line max-len
@@ -127,7 +125,7 @@ describe('route tests', () => {
 
         const response = await sendRequest(app, signupRoute, invalidUser, 400);
 
-        expect(response.body.errors[0].msg).toBe('Must be a valid email');
+        expect(response.body[0].msg).toBe('Must be a valid email');
       });
     });
 
