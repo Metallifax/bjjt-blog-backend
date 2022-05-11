@@ -17,6 +17,11 @@ const userModel = mongoose.Schema({
     type: String,
     required: true,
   },
+  emailVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   blogPosts: {
     type: [
       {

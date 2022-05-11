@@ -4,6 +4,7 @@ import {
   jwtTest,
   loginUser,
   signupUser,
+  verifyUser,
 } from '../controllers/auth.controller.js';
 import {
   emailValidator,
@@ -37,5 +38,9 @@ authRouter.post(
     signupUser(req, res);
   },
 );
+
+authRouter.get('/verify/:token', (req, res) => {
+  verifyUser(req, res);
+});
 
 export default authRouter;

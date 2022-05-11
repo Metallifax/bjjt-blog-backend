@@ -19,7 +19,6 @@ const sendRequest = (app, route, body, responseCode) => {
 
 const signupRoute = '/api/auth/signup';
 const signinRoute = '/api/auth/login';
-const jwtTestRoute = '/api/auth/jwt-test';
 
 describe('route tests', () => {
   let mongoServer = null;
@@ -130,23 +129,8 @@ describe('route tests', () => {
     });
 
     describe('valid signup procedures', () => {
-      it('should return 200 when correctly filled out', async () => {
-        await sendRequest(app, '/api/auth/signup', validUser, 200);
-      });
-
-      // eslint-disable-next-line max-len
-      it('should fetch a recently added user and correctly get user object with token', async () => {
-        const response = await sendRequest(app, signupRoute, validUser, 200);
-
-        const auth = `bearer ${response.body.token}`;
-
-        await supertest(app)
-          .get(jwtTestRoute)
-          .set('Authorization', auth)
-          .expect(200)
-          .then((res) => {
-            expect(res.body.email).toBe('mail@mail.com');
-          });
+      it('should return 201 when correctly filled out', async () => {
+        await sendRequest(app, '/api/auth/signup', validUser, 201);
       });
     });
   });
@@ -154,19 +138,19 @@ describe('route tests', () => {
     // eslint-disable-next-line max-len
     it('should return 200 when valid user exists and attempts to log in', async () => {
       // sign up
-      await sendRequest(app, signupRoute, validUser, 200).then(() => {
+      await sendRequest(app, signupRoute, validUser, 201).then(() => {
         supertest(app).get(signinRoute).send(validUser).expect(200);
       });
     });
 
     // eslint-disable-next-line max-len
-    it('should return jwt token when valid user exists and attempts to log in', async () => {
-      await sendRequest(app, signupRoute, validUser, 200).then(async () => {
+    it('should return "user not verified" when user signs up but hasn\'t been verified yet', async () => {
+      await sendRequest(app, signupRoute, validUser, 201).then(async () => {
         await supertest(app)
           .post(signinRoute)
           .send(validUser)
           .then((res) => {
-            expect(res.body.token).toBeDefined();
+            expect(res.body[0].msg).toBe('User not verified');
           });
       });
     });

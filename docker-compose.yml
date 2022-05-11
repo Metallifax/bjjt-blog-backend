@@ -10,6 +10,8 @@ services:
     depends_on:
       - mongodb
     network_mode: "host"
+    env_file:
+      - .env
   mongodb:
     image: mongo:5.0
     ports:
