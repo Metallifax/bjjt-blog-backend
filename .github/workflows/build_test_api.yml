@@ -37,4 +37,7 @@ jobs:
         run: npm run format
 
       - name: Run testing suite with Jest and React Testing Library
+        env:
+          SMTP_EMAIL: ${{ secrets.SMTP_EMAIL }}
+          SMTP_KEY: ${{ secrets.SMTP_KEY }}
         run: npm run test
