@@ -19,28 +19,20 @@ authRouter.post(
   '/login',
   emailValidator(),
   passwordValidatorSignin(),
-  (req, res) => {
-    loginUser(req, res);
-  },
+  loginUser,
 );
 
 // test jwt passed as bearer to Authorization header
-authRouter.get('/jwt-test', middleware.verify, (req, res) => {
-  jwtTest(req, res);
-});
+authRouter.get('/jwt-test', middleware.verify, jwtTest);
 
 // sign up new user via password and email credentials
 authRouter.post(
   '/signup',
   emailValidator(),
   passwordValidatorSignup(),
-  (req, res) => {
-    signupUser(req, res);
-  },
+  signupUser,
 );
 
-authRouter.get('/verify/:token', (req, res) => {
-  verifyUser(req, res);
-});
+authRouter.get('/verify/:token', verifyUser);
 
 export default authRouter;

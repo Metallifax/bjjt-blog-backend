@@ -8,18 +8,12 @@ import {
 const userRouter = express.Router();
 
 // create post by user ID
-userRouter.post('/:userId/post', (req, res) => {
-  createPostByUserId(req, res);
-});
+userRouter.post('/:userId/post', createPostByUserId);
 
 // get posts by User ID
-userRouter.get('/:userId/posts', (req, res) => {
-  getPostsByUserId(req, res);
-});
+userRouter.get('/:userId/posts', getPostsByUserId);
 
 // Get user by ID
-userRouter.get('/:userId', (req, res) => {
-  getUserById(req, res);
-});
+userRouter.get('/:userId', getUserById);
 
 export default userRouter;
