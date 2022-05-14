@@ -33,7 +33,7 @@ export const loginUser = (req, res) => {
       res
         .status(404)
         .json([{ param: 'email', msg: 'No user with that email found' }]);
-    } else if (!user.verified) {
+    } else if (!user.emailVerified) {
       res.status(403).send([{ param: 'email', msg: 'User not verified' }]);
     } else {
       bcrypt.compare(req.body.password, user.password, (error, match) => {
@@ -89,7 +89,7 @@ export const signupUser = async (req, res) => {
       );
 
       // email the user the unique verification link
-      const url = `http://localhost:${config.port}/api/auth/verify/${verificationToken}`;
+      const url = `http://localhost:3000/verify/${verificationToken}`;
 
       transporter.sendMail({
         from: 'mathew_forgione@msn.com',
@@ -141,6 +141,7 @@ export const verifyUser = async (req, res) => {
 
     return res.status(200).send({
       message: 'Account verified',
+      token: generateToken(user),
     });
   } catch (err) {
     return res.status(500).send(err);
