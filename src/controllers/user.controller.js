@@ -90,8 +90,7 @@ export const getPosts = (req, res) => {
         const sorted = flattened.sort(
           (item1, item2) => item2.createdAt - item1.createdAt,
         );
-        log.info({ result: sorted });
-        res.status(200).json({ result });
+        res.status(200).json({ result: sorted });
       }
     }
   });
