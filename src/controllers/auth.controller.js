@@ -45,7 +45,7 @@ export const loginUser = (req, res) => {
           logger.error(`500 Server error: \n${error}`);
           res.status(500).json(error);
         } else if (match) {
-          res.status(200).json({ token: generateToken(user) });
+          res.status(200).json({ token: generateToken(user), user });
         } else {
           logger.info(`Password is incorrect for user ${req.body.email}`);
           res
@@ -152,6 +152,7 @@ export const verifyUser = async (req, res) => {
     return res.status(200).send({
       message: 'Account verified',
       token: generateToken(user),
+      user,
     });
   } catch (err) {
     logger.info(`when using the \`verifyUser()\` method:${err}`);

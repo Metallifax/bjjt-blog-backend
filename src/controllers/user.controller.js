@@ -10,7 +10,17 @@ export const createPostByUserId = (req, res) => {
   const post = {
     title: req.body.title,
     content: req.body.content,
+    imageUrl: req.body.imageUrl,
   };
+
+  if (post.title === '' || post.title === undefined)
+    return res.status(400).json({ param: 'title', error: 'Cannot be empty' });
+  if (post.content === '' || post.content === undefined)
+    return res.status(400).json({ param: 'content', error: 'Cannot be empty' });
+  if (post.imageUrl === '' || post.imageUrl === undefined)
+    return res
+      .status(400)
+      .json({ param: 'imageUrl', error: 'Cannot be empty' });
 
   User.findOneAndUpdate(
     { _id: req.params.userId },

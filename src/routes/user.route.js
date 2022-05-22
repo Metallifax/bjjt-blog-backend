@@ -1,4 +1,5 @@
 import express from 'express';
+import middleware from '../middleware.js';
 import {
   createPostByUserId,
   getPostsByUserId,
@@ -8,7 +9,7 @@ import {
 const userRouter = express.Router();
 
 // create post by user ID
-userRouter.post('/:userId/post', createPostByUserId);
+userRouter.post('/:userId/post', middleware.verify, createPostByUserId);
 
 // get posts by User ID
 userRouter.get('/:userId/posts', getPostsByUserId);

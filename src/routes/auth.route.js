@@ -23,7 +23,7 @@ authRouter.post(
 );
 
 // test jwt passed as bearer to Authorization header
-authRouter.get('/jwt-test', middleware.verify, jwtTest);
+authRouter.get('/decrypt-token', middleware.verify, jwtTest);
 
 // sign up new user via password and email credentials
 authRouter.post(
