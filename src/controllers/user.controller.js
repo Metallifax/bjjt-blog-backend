@@ -1,5 +1,6 @@
 import { validationResult } from 'express-validator';
 import User from '../models/user.model.js';
+import log from '../utils/logger.js';
 
 export const createPostByUserId = (req, res) => {
   const errors = validationResult(req);
@@ -68,6 +69,28 @@ export const getUserById = (req, res) => {
       if (err) {
         res.status(500).json(err);
       } else {
+        res.status(200).json({ result });
+      }
+    }
+  });
+};
+
+export const getPosts = (req, res) => {
+  const query = User.find({});
+
+  query.select('blogPosts');
+  query.exec((err, result) => {
+    if (!result) {
+      res.status(404).json({ error: 'no blog posts were found!' });
+    } else {
+      if (err) {
+        res.status(500).json(err);
+      } else {
+        const flattened = result.map((user) => user.blogPosts).flat();
+        const sorted = flattened.sort(
+          (item1, item2) => item2.createdAt - item1.createdAt,
+        );
+        log.info({ result: sorted });
         res.status(200).json({ result });
       }
     }
